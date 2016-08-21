@@ -19,6 +19,7 @@ import com.example.ahmme.tourmate.TourMate.MainFragment;
 import com.example.ahmme.tourmate.NearBy.NearByFragment;
 import com.example.ahmme.tourmate.TourMate.ViewTravelMomentFragment;
 import com.example.ahmme.tourmate.Tracker.LocationTrackerFragment;
+import com.example.ahmme.tourmate.TravelLogManagement.TravelLogFragment;
 import com.example.ahmme.tourmate.Weather.WeatherFragment;
 
 public class TureMateActivity extends AppCompatActivity
@@ -106,6 +107,9 @@ public class TureMateActivity extends AppCompatActivity
         } else if (id == R.id.viewTravleMoment) {
             transaction.remove(currentFragment);
             currentFragment = new ViewTravelMomentFragment();
+        } else if (id == R.id.travel_log) {
+            transaction.remove(currentFragment);
+            currentFragment = new TravelLogFragment();
 
         } else if (id == R.id.expance) {
             currentFragment=new ExpenceFragment();

@@ -1,7 +1,9 @@
 package com.example.ahmme.tourmate.Tracker;
 
 import android.support.v4.app.FragmentActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.ahmme.tourmate.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -10,10 +12,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    LocationTracker traker;
+    LocationManager manager;
+    Polyline line;
+    private ArrayList<LatLng> points;
+    ArrayList<LocationTracker> allLocationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,25 +34,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        traker=new LocationTracker();
+        manager=new LocationManager(this);
+        points=new ArrayList<>();
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        allLocationList=manager.getAllLoationInfo();
+        for(LocationTracker info : allLocationList){
+            LatLng latLng=new LatLng(Double.valueOf(info.getLatitude()),Double.valueOf(info.getLongitude()));
+            points.add(latLng);
+        }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        redrawLine();
+
+    }
+
+    private void redrawLine(){
+
+        mMap.clear();  //clears all Markers and Polylines
+        int count=0;
+        LatLng point=new LatLng(0.0,0.0);
+
+        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+        for (int i = 0; i < points.size(); i++) {
+            point= points.get(i);
+            count+=1;
+            options.add(point);
+            mMap.addMarker(new MarkerOptions().position(point).title(allLocationList.get(i).getAddress()));
+
+
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+
+
+        Toast.makeText(MapsActivity.this,"Map total Location "+String.valueOf(count), Toast.LENGTH_SHORT).show();
+        //add Marker in current position
+        line = mMap.addPolyline(options); //add Polyline
     }
 }

@@ -2,12 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background_color"
+    android:padding="@dimen/activity_padding"
     tools:context="com.example.ahmme.tourmate.TourMate.AddEventFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/text_small_padding"
+        android:layout_marginTop="10dp"
+        android:hint="Name Of Tourist Spot"
+        android:textSize="@dimen/midium_text_size" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Travle Starting Location"
+        android:textSize="@dimen/midium_text_size" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Travel Duration"
+        android:textSize="@dimen/midium_text_size"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Your Estimated Budget:"
+        android:textSize="@dimen/midium_text_size" />
+</LinearLayout>
 
 </FrameLayout>
